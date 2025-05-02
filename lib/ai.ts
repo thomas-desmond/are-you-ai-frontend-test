@@ -68,29 +68,37 @@ async function getAiDescriptionAndInsertToVectorize(
 
 async function getRandomAIGeneratedImage(sessionId: string): Promise<string> {
   try {
-    const response = await fetch(
-      process.env.API_ENDPOINT + "/randomImageUrl",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Session-Identifier": sessionId,
-        },
-        cache: 'no-store'
+    const url = process.env.API_ENDPOINT + "/randomImageUrl";
+    console.log("Full request details:", {
+      url,
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Session-Identifier": sessionId,
       }
-    );
+    });
 
-    console.log("ENDPOITN URL", process.env.API_ENDPOINT + "/randomImageUrl");
-    console.log("RESPONSE status", response.status);
-    console.log("RESPONSE status", response.statusText);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Session-Identifier": sessionId,
+      },
+      cache: 'no-store'
+    });
+
+    console.log("Response details:", {
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries(response.headers.entries())
+    });
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch AI generated image`);
+      throw new Error(`Failed to fetch AI generated image: ${response.status} ${response.statusText}`);
     }
 
-
     const data = (await response.json()) as any;
-    console.log("DATA", data);
+    console.log("Response data:", data);
 
     return data.imageUrl;
   } catch (error) {

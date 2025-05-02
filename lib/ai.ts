@@ -50,7 +50,9 @@ async function getAiDescriptionAndInsertToVectorize(
       }
     );
 
-    console.log("RESPONSE", response);
+    console.log("RESPONSE status", response.status);
+    console.log("RESPONSE headers", response.headers);
+    console.log("RESPONSE body", await response.json());
 
     if (!response.ok) {
       throw new Error(`Failed to fetch AI image description`);

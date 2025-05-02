@@ -52,7 +52,6 @@ async function getAiDescriptionAndInsertToVectorize(
 
     console.log("ENDPOITN URL", process.env.API_ENDPOINT);
     console.log("RESPONSE status", response.status);
-    console.log("RESPONSE body", await response.json());
 
     if (!response.ok) {
       throw new Error(`Failed to fetch AI image description`);
@@ -81,7 +80,9 @@ async function getRandomAIGeneratedImage(sessionId: string): Promise<string> {
       }
     );
 
-    console.log("RESPONSE", response);
+    console.log("ENDPOITN URL", process.env.API_ENDPOINT + "/randomImageUrl");
+    console.log("RESPONSE status", response.status);
+    console.log("RESPONSE status", response.statusText);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch AI generated image`);

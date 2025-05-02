@@ -1,7 +1,7 @@
 {
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-05-01",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "name": "are-you-ai-frontend-test",
   "assets": {
     "directory": ".open-next/assets",

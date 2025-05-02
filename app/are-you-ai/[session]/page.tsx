@@ -20,8 +20,6 @@ export default async function Home({
   const sessionId = nanoid();
   const imageUrl = await getRandomAIGeneratedImage(sessionId);
 
-  console.log("IMAGE URL", imageUrl);
-
   return (
     <>
       <div className="absolute top-4 left-4">

@@ -15,7 +15,6 @@ async function getAiSimilarity(
         headers: {
           "Content-Type": "application/json",
           "Session-Identifier": sessionId,
-          "API-Key": process.env.API_KEY as string,
         },
         body: JSON.stringify({ sessionId, text, aiImageDescription, imageUrl }),
       }
@@ -46,11 +45,12 @@ async function getAiDescriptionAndInsertToVectorize(
         headers: {
           "Content-Type": "application/json",
           "Session-Identifier": sessionId,
-          "API-Key": process.env.API_KEY as string,
         },
         body: JSON.stringify({ sessionId, imageUrl }),
       }
     );
+
+    console.log("RESPONSE", response);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch AI image description`);
@@ -74,16 +74,20 @@ async function getRandomAIGeneratedImage(sessionId: string): Promise<string> {
         headers: {
           "Content-Type": "application/json",
           "Session-Identifier": sessionId,
-          "API-Key": process.env.API_KEY as string,
         },
       }
     );
+
+    console.log("RESPONSE", response);
 
     if (!response.ok) {
       throw new Error(`Failed to fetch AI generated image`);
     }
 
+
     const data = (await response.json()) as any;
+    console.log("DATA", data);
+
     return data.imageUrl;
   } catch (error) {
     console.error("Error fetching AI generated image:", error);

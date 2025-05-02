@@ -12,18 +12,15 @@ export async function generateMetadata() {
   };
 }
 
-// Separate edge function for data fetching
-async function getImageData(sessionId: string) {
-  return await getRandomAIGeneratedImage(sessionId);
-}
-
 export default async function Home({
   params,
 }: {
   params: { session: string };
 }) {
   const sessionId = nanoid();
-  const imageUrl = await getImageData(sessionId);
+  const imageUrl = await getRandomAIGeneratedImage(sessionId);
+
+  console.log("IMAGE URL", imageUrl);
 
   return (
     <>

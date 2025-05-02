@@ -77,6 +77,7 @@ async function getRandomAIGeneratedImage(sessionId: string): Promise<string> {
           "Content-Type": "application/json",
           "Session-Identifier": sessionId,
         },
+        cache: 'no-store'
       }
     );
 

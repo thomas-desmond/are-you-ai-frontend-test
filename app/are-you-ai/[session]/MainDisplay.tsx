@@ -25,7 +25,8 @@ const initialState = {
 const MainDisplay: React.FC<InputFormProps> = (props) => {
   const [userDescription, setUserDescription] = React.useState<string>();
   const [nextSession, setNextSession] = React.useState<string>(nanoid());
-  const [aiImageDescription, setAiImageDescription] = React.useState<string>("");
+  const [aiImageDescription, setAiImageDescription] =
+    React.useState<string>("");
 
   const [state, formAction] = useFormState(
     handleSubmitServerAction,
@@ -34,11 +35,16 @@ const MainDisplay: React.FC<InputFormProps> = (props) => {
 
   React.useEffect(() => {
     const getAiDescription = async () => {
-      const aiImageDescription = await getAiDescriptionAndInsertToVectorizeAction(props.sessionId, props.imageUrl)
-      setAiImageDescription(aiImageDescription)
-    }
- 
-    getAiDescription()  }, []);
+      const aiImageDescription =
+        await getAiDescriptionAndInsertToVectorizeAction(
+          props.sessionId,
+          props.imageUrl
+        );
+      setAiImageDescription(aiImageDescription);
+    };
+
+    getAiDescription();
+  }, []);
 
   if (!props.imageUrl) {
     return (
@@ -72,8 +78,8 @@ const MainDisplay: React.FC<InputFormProps> = (props) => {
           width={336}
           height={336}
           className="rounded-lg shadow-xl"
-          priority 
-     />
+          priority
+        />
       </ComponentWrapper>
       <form
         className="w-full flex justify-center items-center"

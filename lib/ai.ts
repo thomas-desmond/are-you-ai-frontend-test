@@ -68,45 +68,27 @@ async function getAiDescriptionAndInsertToVectorize(
 
 async function getRandomAIGeneratedImage(sessionId: string): Promise<string> {
   try {
-    const url = process.env.API_ENDPOINT + "/randomImageUrl";
-    console.log("Request URL:", url);
-    console.log("Request method:", "GET");
-    console.log("Request headers:", {
-      "Content-Type": "application/json",
-      "Session-Identifier": sessionId
-    });
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Session-Identifier": sessionId,
-      },
-      cache: 'no-store'
-    });
-
-    console.log("Response status:", response.status);
-    console.log("Response status text:", response.statusText);
-    console.log("Response headers:", Object.fromEntries(response.headers.entries()));
-
-    // Try to get the response text even if the status is not ok
-    const responseText = await response.text();
-    console.log("Response body:", responseText);
+    const response = await fetch(
+      process.env.API_ENDPOINT + "/randomImageUrl",
+      {
+        method: "GET",
+        cache: "no-store",
+        headers: {
+          "Content-Type": "application/json",
+          "Session-Identifier": sessionId,
+        },
+      }
+    );
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch AI generated image: ${response.status} ${response.statusText}\nResponse body: ${responseText}`);
+      throw new Error(`Failed to fetch AI generated image`);
     }
 
-    const data = JSON.parse(responseText);
-    console.log("Parsed response data:", data);
+    const data = (await response.json()) as any;
 
     return data.imageUrl;
   } catch (error) {
     console.error("Error fetching AI generated image:", error);
-    if (error instanceof Error) {
-      console.error("Error details:", error.message);
-      console.error("Error stack:", error.stack);
-    }
     return "";
   }
 }

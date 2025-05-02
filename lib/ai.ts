@@ -50,8 +50,8 @@ async function getAiDescriptionAndInsertToVectorize(
       }
     );
 
+    console.log("ENDPOITN URL", process.env.API_ENDPOINT);
     console.log("RESPONSE status", response.status);
-    console.log("RESPONSE headers", response.headers);
     console.log("RESPONSE body", await response.json());
 
     if (!response.ok) {

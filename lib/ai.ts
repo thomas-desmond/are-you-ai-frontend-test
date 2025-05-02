@@ -69,13 +69,11 @@ async function getAiDescriptionAndInsertToVectorize(
 async function getRandomAIGeneratedImage(sessionId: string): Promise<string> {
   try {
     const url = process.env.API_ENDPOINT + "/randomImageUrl";
-    console.log("Full request details:", {
-      url,
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Session-Identifier": sessionId,
-      }
+    console.log("Request URL:", url);
+    console.log("Request method:", "GET");
+    console.log("Request headers:", {
+      "Content-Type": "application/json",
+      "Session-Identifier": sessionId
     });
 
     const response = await fetch(url, {
@@ -87,22 +85,28 @@ async function getRandomAIGeneratedImage(sessionId: string): Promise<string> {
       cache: 'no-store'
     });
 
-    console.log("Response details:", {
-      status: response.status,
-      statusText: response.statusText,
-      headers: Object.fromEntries(response.headers.entries())
-    });
+    console.log("Response status:", response.status);
+    console.log("Response status text:", response.statusText);
+    console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+
+    // Try to get the response text even if the status is not ok
+    const responseText = await response.text();
+    console.log("Response body:", responseText);
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch AI generated image: ${response.status} ${response.statusText}`);
+      throw new Error(`Failed to fetch AI generated image: ${response.status} ${response.statusText}\nResponse body: ${responseText}`);
     }
 
-    const data = (await response.json()) as any;
-    console.log("Response data:", data);
+    const data = JSON.parse(responseText);
+    console.log("Parsed response data:", data);
 
     return data.imageUrl;
   } catch (error) {
     console.error("Error fetching AI generated image:", error);
+    if (error instanceof Error) {
+      console.error("Error details:", error.message);
+      console.error("Error stack:", error.stack);
+    }
     return "";
   }
 }
